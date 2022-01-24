@@ -1,37 +1,33 @@
 import { useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
+
+import { Guesses } from "./components/guesses/Guesses";
 import { Keyboard } from "./components/keyboard/Keyboard";
+import { KeyboardHints } from "./components/keyboard/KeyboardHints";
+import Wordle from "./lib/wordle";
 
-function Guesses({ guesses, currentGuess }) {
-    let cellClasses =
-        "w-14 h-14 border-solid border-2 flex items-center justify-center mx-0.5 text-lg font-bold rounded";
-    let rowClasses = "flex justify-center mb-1";
-
+function AllowedWords({ words }) {
     return (
-        <div className="pb-6">
-            {guesses.map((guess, index) => (
-                <div key={index} className={rowClasses}>
-                    {guess.split("").map((char, index) => (
-                        <div className={cellClasses}>{char}</div>
-                    ))}
+        <div>
+            <p>Here are some things you can guess: </p>
+            {words.slice(0, 30).map((w, i) => (
+                <div key={i}>
+                    Word - {w.word}, Score {w.score}{" "}
                 </div>
             ))}
-            <div key={"current"} className={rowClasses}>
-                {currentGuess
-                    .padEnd(5)
-                    .split("")
-                    .map((char, index) => (
-                        <div className={cellClasses}>{char}</div>
-                    ))}
-            </div>
         </div>
     );
 }
 
+const game = new Wordle();
+
 function App() {
     const [guesses, setGuesses] = useState([]);
+    const [hints, setHints] = useState([]);
     const [currentGuess, setCurrentGuess] = useState("");
+    const [currentHint, setCurrentHint] = useState("");
+    const [showHintState, setHintState] = useState(false);
+    const [allowedWords, setAllowedWords] = useState([]);
 
     const onChar = (value) => {
         if (currentGuess.length < 5) {
@@ -44,22 +40,68 @@ function App() {
     };
 
     const onEnter = () => {
+        // setGuesses([...guesses, currentGuess]);
+        // setCurrentGuess("");
+
+        // get the hints
+        if (currentGuess.length === 5) {
+            setHintState(true);
+        }
+    };
+
+    const onHint = (value) => {
+        if (currentHint.length < 5) {
+            setCurrentHint(`${currentHint}${value.charAt(0)}`);
+        }
+    };
+
+    const onDeleteHint = () => {
+        setCurrentHint(currentHint.slice(0, -1));
+    };
+
+    const onEnterHint = () => {
+        if (currentHint.length < 5) {
+            return;
+        }
+
+        console.log("onEnterHint called");
+        // Update the Wordle
+        game.addTurn(currentGuess, currentHint);
+
         setGuesses([...guesses, currentGuess]);
         setCurrentGuess("");
+        setHints([...hints, currentHint]);
+        setCurrentHint("");
+        setHintState(false);
+        setAllowedWords(game.getNewGuesses());
     };
 
     return (
         <div className="App">
             <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <h1>Welcome to Wordle Helper!</h1>
-                <p>Enter your guesses below:</p>
-                <Guesses guesses={guesses} currentGuess={currentGuess} />
-                <Keyboard
-                    onChar={onChar}
-                    onDelete={onDelete}
-                    onEnter={onEnter}
+                <p>Enter your {showHintState ? "hints" : "guesses"} below:</p>
+                <Guesses
                     guesses={guesses}
+                    hints={hints}
+                    currentGuess={currentGuess}
+                    currentHint={currentHint}
                 />
+                {showHintState ? (
+                    <KeyboardHints
+                        onChar={onHint}
+                        onDelete={onDeleteHint}
+                        onEnter={onEnterHint}
+                    />
+                ) : (
+                    <Keyboard
+                        onChar={onChar}
+                        onDelete={onDelete}
+                        onEnter={onEnter}
+                        guesses={guesses}
+                    />
+                )}
+                <AllowedWords words={allowedWords} />
             </div>
         </div>
     );
