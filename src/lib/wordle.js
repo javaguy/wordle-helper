@@ -41,30 +41,11 @@ export default function Wordle() {
 
 Wordle.prototype.addTurn = function (guess, result) {
     this.state.addTurn(guess, result);
-    console.log("AddTurn guess: ", guess, " result: ", result);
-    console.log("AddTurn state - ", this.state);
 };
 
 Wordle.prototype.getNewGuesses = function () {
     return this.findWordsWithState(this.state);
 };
-
-// function findWordWithGuesses(guesses) {
-//     // Given a list of guesses find all the words that match
-
-//     let allowableWords = [];
-
-//     WORDS.forEach((word) => {
-//         let check = guesses.every((g) => word.indexOf(g) >= 0);
-//         if (check) {
-//             allowableWords.push({ word: word, score: wordScore(word) });
-//         }
-//     });
-
-//     allowableWords.sort((a, b) => b.score - a.score);
-
-//     return allowableWords;
-// }
 
 Wordle.prototype.findWordsWithState = function (state) {
     let dictionary = this.dictionary;
@@ -88,8 +69,6 @@ Wordle.prototype.findWordsWithState = function (state) {
         .join("");
 
     let dynamicPart = "^" + lookAhead + letterMatch + "$";
-
-    console.log(`dyanmicPart: ${dynamicPart}`);
 
     return dictionary.regexSearch(dynamicPart);
 };

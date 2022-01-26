@@ -26,7 +26,6 @@ Dictionary.prototype.regexSearch = function (regexStr) {
 
 function readWordsv2() {
     return WORDSLIST.map((line) => {
-        // console.log("line - ", line);
         return {
             word: line.word,
             isAnswer: line.isAnswer,
@@ -59,14 +58,16 @@ function calculateLetterFrequency(words) {
         });
     });
 
-    console.log("Letter Frequencies - ", freq);
+    Object.keys(freq).forEach((letter) => {
+        freq[letter] = freq[letter] / answerWords.length;
+    });
 
     return freq;
 }
 
 function wordScore(word, freq) {
     let score = [...word.set].reduce(
-        (score, letter) => score * freq[letter],
+        (score, letter) => score * freq[letter] * 100,
         1
     );
 

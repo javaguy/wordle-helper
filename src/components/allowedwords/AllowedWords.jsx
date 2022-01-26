@@ -23,8 +23,39 @@ function Sort({ sort, onSort }) {
     );
 }
 
-export function AllowedWords({ words }) {
+function Frequency({ freq }) {
+    let list = Object.keys(freq).map((key) => ({
+        letter: key,
+        count: freq[key]
+    }));
+
+    list.sort((a, b) => b.count - a.count);
+
+    return (
+        <div className="pb-6">
+            <div className="mb-6 font-bold">
+                Here are the most common letters in the Wordle:
+            </div>
+            <div className="grid grid-cols-4 gap-4">
+                {list.map((l, i) => (
+                    <div
+                        className="border-solid border-2 flex items-center justify-center mx-0.5 text-lg rounded"
+                        key={i}
+                    >
+                        {l.letter.toUpperCase()}: {Math.round(l.count * 100)}%
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+export function AllowedWords({ words, freq }) {
     const [sort, setSort] = useState("alpha");
+
+    if (!words || words.length === 0) {
+        return <Frequency freq={freq} />;
+    }
 
     let sortedList = (
         sort === "answer" ? words.filter((w) => w.isAnswer) : words
@@ -38,6 +69,9 @@ export function AllowedWords({ words }) {
 
     return (
         <div className="pb-6">
+            <div className="mb-6 font-bold">
+                Here are some words you can try:
+            </div>
             <Sort sort={sort} onSort={setSort} />
             <div className="grid grid-cols-4 gap-4">
                 {sortedList.slice(0, 52).map((w, i) => (

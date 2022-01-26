@@ -55,7 +55,6 @@ function App() {
             return;
         }
 
-        console.log("onEnterHint called");
         // Update the Wordle
         game.addTurn(currentGuess, currentHint);
 
@@ -80,26 +79,12 @@ function App() {
                     </h1>
                     <button
                         type="text"
-                        className="underline decoration-sky-500"
+                        className="underline decoration-orange-400"
                         onClick={() => setShowAbout(true)}
                     >
                         How to Use
                     </button>
                 </div>
-                {/* <div className="mb-6">
-                    I built this app to help you play Wordle. To get started,
-                    <br />
-                    1. Enter your guess as you did in Wordle. <br />
-                    2. For each letter in your guess, enter the hint that Wordle
-                    gave you. <br />
-                    <em>absent</em> means the letter is not in the word. <br />
-                    <em>present</em> means the letter is in the word, but
-                    incorrect position. <br />
-                    <i>correct</i> means the letter is in the word and in the
-                    correct position.
-                    <br />
-                    <br /> Enjoy!
-                </div> */}
                 <div className="mb-6 font-bold">
                     Enter your {showHintState ? "hints" : "guesses"} below:
                 </div>
@@ -123,11 +108,23 @@ function App() {
                         guesses={guesses}
                     />
                 )}
-                <div className="mb-6 font-bold">
-                    Here are some words you can try:
-                </div>
-                <AllowedWords words={allowedWords} />
+                <AllowedWords
+                    words={allowedWords}
+                    freq={game.dictionary.letterFrequency}
+                />
             </div>
+            <footer>
+                <div className="text-center">
+                    You can check out the source code{" "}
+                    <a
+                        href="https://github.com/javaguy/wordle-helper"
+                        className="underline decoration-orange-400"
+                    >
+                        here
+                    </a>
+                    . Contributions on improving the hints are welcome!
+                </div>
+            </footer>
         </div>
     );
 }
