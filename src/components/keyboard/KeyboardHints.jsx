@@ -34,7 +34,7 @@ export const KeyboardHints = ({ onChar, onDelete, onEnter, guesses }) => {
     }, [onEnter, onDelete, onChar]);
 
     return (
-        <div>
+        <div className="mb-6">
             <div className="flex justify-center mb-1">
                 <Key
                     width={130.8}

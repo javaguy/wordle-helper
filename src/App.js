@@ -4,20 +4,9 @@ import "./App.css";
 import { Guesses } from "./components/guesses/Guesses";
 import { Keyboard } from "./components/keyboard/Keyboard";
 import { KeyboardHints } from "./components/keyboard/KeyboardHints";
-import Wordle from "./lib/wordle";
+import { AllowedWords } from "./components/allowedwords/AllowedWords";
 
-function AllowedWords({ words }) {
-    return (
-        <div>
-            <p>Here are some things you can guess: </p>
-            {words.slice(0, 30).map((w, i) => (
-                <div key={i}>
-                    Word - {w.word}, Score {w.score}{" "}
-                </div>
-            ))}
-        </div>
-    );
-}
+import Wordle from "./lib/wordle";
 
 const game = new Wordle();
 
@@ -79,8 +68,12 @@ function App() {
     return (
         <div className="App">
             <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <h1>Welcome to Wordle Helper!</h1>
-                <p>Enter your {showHintState ? "hints" : "guesses"} below:</p>
+                <h1 className="mb-6 text-3xl font-bold">
+                    Welcome to Wordle Helper!
+                </h1>
+                <div className="mb-6 font-bold">
+                    Enter your {showHintState ? "hints" : "guesses"} below:
+                </div>
                 <Guesses
                     guesses={guesses}
                     hints={hints}
@@ -101,6 +94,9 @@ function App() {
                         guesses={guesses}
                     />
                 )}
+                <div className="mb-6 font-bold">
+                    Here are some words you can try:
+                </div>
                 <AllowedWords words={allowedWords} />
             </div>
         </div>

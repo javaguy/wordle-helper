@@ -42,29 +42,3 @@ export const Guesses = ({ guesses, hints, currentGuess, currentHint }) => {
         </div>
     );
 };
-
-// export const Guesses = ({ guesses, hints, currentGuess, currentHint }) {
-//     let cellClasses =
-//         "w-14 h-14 border-solid border-2 flex items-center justify-center mx-0.5 text-lg font-bold rounded";
-//     let rowClasses = "flex justify-center mb-1";
-
-//     return (
-//         <div className="pb-6">
-//             {guesses.map((guess, index) => (
-//                 <div key={index} className={rowClasses}>
-//                     {guess.split("").map((char, index) => (
-//                         <div className={cellClasses}>{char}</div>
-//                     ))}
-//                 </div>
-//             ))}
-//             <div key={"current"} className={rowClasses}>
-//                 {currentGuess
-//                     .padEnd(5)
-//                     .split("")
-//                     .map((char, index) => (
-//                         <div className={cellClasses}>{char}</div>
-//                     ))}
-//             </div>
-//         </div>
-//     );
-// }
