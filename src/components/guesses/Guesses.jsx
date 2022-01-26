@@ -1,6 +1,6 @@
 import classNames from "classnames";
 
-const Cell = ({ value, state }) => {
+export const Cell = ({ value, state }) => {
     const classes = classNames(
         "w-14 h-14 border-solid border-2 flex items-center justify-center mx-0.5 text-lg font-bold rounded",
         {
